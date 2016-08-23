@@ -1,0 +1,2 @@
+<p>This server is for tracking and management of game servers.</p>
+<p>To report problems, please E-mail <a href="<%= email %>"><%= email %></a>.</p>
