@@ -40,7 +40,10 @@ end)
 
 app:get("/server", function() 
 
-    local result_servers = server_collection:find({})
+    local clock = os.time()
+    local timediff = clock - config.server_timeout
+
+    local result_servers = server_collection:find({ ping = { ["$gt"] = timediff }})
     
     local servers = {}
     for server in result_servers do
@@ -92,7 +95,7 @@ app:post("/server/ping", capture_errors({
 
         local result = server_collection:update_one(
             { hostname = self.params.hostname, port = self.params.port },
-            {["$set"] = { name = self.params.name, ping = os.date("%Y-%m-%d %H:%M:%S") }},
+            {["$set"] = { name = self.params.name, ping = os.time() }},
             true
         )
 
