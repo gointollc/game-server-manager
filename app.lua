@@ -25,7 +25,10 @@ app:get("/", function()
 
     app.layout = require "views.layout"
 
-    page_title = (config.company .. " Server Tracker")
+    if config.company then
+        page_title = (config.company .. " Server Tracker")
+    end
+    
     email = config.email
 
     return { 
