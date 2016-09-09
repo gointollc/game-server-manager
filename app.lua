@@ -76,11 +76,11 @@ app:post("/server/ping", capture_errors({
         local success
         local reason
         
-        print("PSK: " .. self.params.psk)
-        print("hostname: " .. self.params.hostname)
-        print("port: " .. self.params.port)
-        print("name: " .. self.params.name)
-        print("ping: " .. os.date("%Y-%m-%d %H:%M:%S"))
+        ngx.log(ngx.NOTICE, "PSK: " .. self.params.psk)
+        ngx.log(ngx.NOTICE, "hostname: " .. self.params.hostname)
+        ngx.log(ngx.NOTICE, "port: " .. self.params.port)
+        ngx.log(ngx.NOTICE, "name: " .. self.params.name)
+        ngx.log(ngx.NOTICE, "ping: " .. os.date("%Y-%m-%d %H:%M:%S"))
 
         validate.assert_valid(self.params, {
             { "psk", exists = true, "Authentication failed" },
