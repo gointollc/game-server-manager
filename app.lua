@@ -75,6 +75,12 @@ app:post("/server/ping", capture_errors({
 
         local success
         local reason
+        
+        print("PSK: " .. self.params.psk)
+        print("hostname: " .. self.params.hostname)
+        print("port: " .. self.params.port)
+        print("name: " .. self.params.name)
+        print("ping: " .. os.date("%Y-%m-%d %H:%M:%S"))
 
         validate.assert_valid(self.params, {
             { "psk", exists = true, "Authentication failed" },
@@ -82,12 +88,6 @@ app:post("/server/ping", capture_errors({
             { "hostname", exists = true, "Hostname not proided." },
             { "port", exists = true, "Port not proided." },
         }) 
-        
-        print("PSK: " .. self.params.psk)
-        print("hostname: " .. self.params.hostname)
-        print("port: " .. self.params.port)
-        print("name: " .. self.params.name)
-        print("ping: " .. os.date("%Y-%m-%d %H:%M:%S"))
 
         -- authenticate
         if self.params.psk ~= config.psk then 
