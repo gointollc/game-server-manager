@@ -100,13 +100,27 @@ app:post("/server/ping", capture_errors({
             }
         end
 
+        local activePlayers
+        if self.params.activePlayers then
+            activePlayers = self.params.activePlayers
+        else
+            activePlayers = 0
+        end
+
+        local maxPlayers
+        if self.params.maxPlayers then
+            maxPlayers = self.params.maxPlayers
+        else
+            maxPlayers = 0
+        end
+
         local result = server_collection:update_one(
             { hostname = self.params.hostname, port = self.params.port },
             {["$set"] = { 
                 name = self.params.name, 
                 ping = os.time(),
-                activePlayers = self.params.activePlayers,
-                maxPlayers = self.params.maxPlayers, 
+                activePlayers = tonumber(self.params.activePlayers),
+                maxPlayers = tonumber(self.params.maxPlayers), 
             }},
             true
         )
