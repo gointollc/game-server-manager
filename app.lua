@@ -102,7 +102,12 @@ app:post("/server/ping", capture_errors({
 
         local result = server_collection:update_one(
             { hostname = self.params.hostname, port = self.params.port },
-            {["$set"] = { name = self.params.name, ping = os.time() }},
+            {["$set"] = { 
+                name = self.params.name, 
+                ping = os.time(),
+                activePlayers = self.params.activePlayers,
+                maxPlayers = self.params.maxPlayers, 
+            }},
             true
         )
 
