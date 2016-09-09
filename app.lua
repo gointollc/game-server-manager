@@ -62,6 +62,10 @@ app:get("/server", function()
 
 end)
 
+app:post("/server", function() 
+    return { redirect_to = "/" }
+end)
+
 app:get("/server/add", function() 
     return { redirect_to = "/" }
 end)
@@ -77,7 +81,13 @@ app:post("/server/ping", capture_errors({
             { "name", exists = true, "Server name not proided." },
             { "hostname", exists = true, "Hostname not proided." },
             { "port", exists = true, "Port not proided." },
-        })
+        }) 
+        
+        print("PSK: " .. self.params.psk)
+        print("hostname: " .. self.params.hostname)
+        print("port: " .. self.params.port)
+        print("name: " .. self.params.name)
+        print("ping: " .. os.date("%Y-%m-%d %H:%M:%S"))
 
         -- authenticate
         if self.params.psk ~= config.psk then 
@@ -89,12 +99,6 @@ app:post("/server/ping", capture_errors({
                 content_type = "application/json"
             }
         end
-
-        print("PSK: " .. self.params.psk)
-        print("hostname: " .. self.params.hostname)
-        print("port: " .. self.params.port)
-        print("name: " .. self.params.name)
-        print("ping: " .. os.date("%Y-%m-%d %H:%M:%S"))
 
         local result = server_collection:update_one(
             { hostname = self.params.hostname, port = self.params.port },
