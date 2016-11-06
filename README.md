@@ -7,7 +7,30 @@ Application to track operating game servers and provide an up to date and health
 2. `lapis build production`
 3. `lapis server production`
 
+## Get servers
+
+Endpoint: `/server`
+
+Get all available game servers.
+
+### Example Output
+
+    {
+        servers: [
+            {
+                activePlayers: 2,
+                maxPlayers: 4,
+                ping: 1478410862,
+                name: "US-East-1",
+                hostname: "server1.eastus.example.com",
+                port: "1234"
+            }
+        ]
+    }
+
 ## Ping
+
+Endpoint: `/server/ping`
 
 Pinging the server is what lets the tracker know that a server is active and what kind of room it has.  It also lets the tracker know that the server is still alive.  if it doesn't get a ping before `server_timeout` is reached, it will be considered dead and removed from the list. 
 
@@ -19,3 +42,11 @@ Pinging the server is what lets the tracker know that a server is active and wha
 - `name` - The public name or 'title' of the server.
 - `maxPlayers` - Maximum players that can connect to the server.
 - `activePlayers` - Current active players connected to the server.
+- 'dev' - Whether the server is a development build or not.
+
+### Example Output
+
+    {
+        "success": true,
+        "reason": "Successfully added server"
+    }
