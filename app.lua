@@ -120,7 +120,7 @@ app:post("/server/ping", capture_errors({
 
         -- authenticate
         if self.params.psk ~= config.production_psk and self.params.psk ~= config.development_psk then 
-            ngx.log(ngx.WARNING, "Authentication failure")
+            ngx.log(ngx.WARN, "Authentication failure")
             return {
                 json = {
                     success = false, 
@@ -196,7 +196,7 @@ app:post("/server/ping", capture_errors({
     end,
     on_error = function(self, err, trace)
         --ngx.log(ngx.NOTICE, "There was an error! " .. self.errors[0])
-        ngx.log(ngx.ERROR, "Unknown error.")
+        ngx.log(ngx.ERR, "Unknown error.")
         return { 
             json = {
                 success = false, 
