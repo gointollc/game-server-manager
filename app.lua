@@ -77,10 +77,6 @@ app:post("/server", function()
     return { redirect_to = "/" }
 end)
 
-app:get("/server/add", function() 
-    return { redirect_to = "/" }
-end)
-
 -- TODO: app:delete("/server/ping")
 
 app:post("/server/ping", capture_errors({
