@@ -2,7 +2,8 @@
 local config = require("lapis.config")
 
 config("development", {
-    psk = "CHANGEMELKMosidmflaskdmflSKLDKSLDFMlksa",
+    production_psk = "CHANGEMELKMosidmflaskdmflSKLDKSLDFMlksa",
+    development_psk = "IMALITTLETEAPOT",
     port = 9000,
     company = "My Company",
     url = "https://gointo.software",

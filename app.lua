@@ -41,7 +41,7 @@ app:get("/robots.txt", function()
     return { render = "robots" }
 end)
 
-app:get("/server", function() 
+app:get("/server", function(self) 
 
     local clock = os.time()
     local timediff = clock - config.server_timeout
@@ -50,7 +50,18 @@ app:get("/server", function()
     
     local servers = {}
     for server in result_servers do
-        table.insert(servers, server)
+        if self.params.dev then
+            table.insert(servers, server)
+        else
+            table.insert(servers, {
+                hostname = server['hostname'],
+                port = server['port'],
+                name = server['name'],
+                activePlayers = server['activePlayers'],
+                maxPlayers = server['maxPlayers'],
+                ping = server['ping'],
+            })
+        end
     end
 
     return { 
@@ -69,6 +80,8 @@ end)
 app:get("/server/add", function() 
     return { redirect_to = "/" }
 end)
+
+-- TODO: app:delete("/server/ping")
 
 app:post("/server/ping", capture_errors({
     function(self)
@@ -90,7 +103,7 @@ app:post("/server/ping", capture_errors({
         }) 
 
         -- authenticate
-        if self.params.psk ~= config.psk then 
+        if self.params.psk ~= config.production_psk and self.params.psk ~= config.development_psk then 
             return {
                 json = {
                     success = false, 
@@ -100,6 +113,7 @@ app:post("/server/ping", capture_errors({
             }
         end
 
+        -- If activePlayers wasn't defined, let's assume there was none
         local activePlayers
         if self.params.activePlayers then
             activePlayers = self.params.activePlayers
@@ -107,25 +121,39 @@ app:post("/server/ping", capture_errors({
             activePlayers = 0
         end
 
+        -- If maxPlayers wasn't defined, let's default to 4
         local maxPlayers
         if self.params.maxPlayers then
             maxPlayers = self.params.maxPlayers
         else
-            maxPlayers = 0
+            maxPlayers = 4
         end
 
+        -- Is this server a development server? We're going to decide by
+        -- using the PSK.  There's one for prod and another for dev
+        local dev
+        if self.params.psk == config.production_psk then
+            dev = false
+        else 
+            dev = true 
+        end
+
+        -- define the document we're going to put in mongo
+        local server_doc = { 
+            name = self.params.name, 
+            ping = os.time(),
+            activePlayers = tonumber(activePlayers),
+            maxPlayers = tonumber(maxPlayers), 
+            dev = dev,
+        }
+
+        -- update mongo
         local result = server_collection:update_one(
             { hostname = self.params.hostname, port = self.params.port },
-            {["$set"] = { 
-                name = self.params.name, 
-                ping = os.time(),
-                activePlayers = tonumber(self.params.activePlayers),
-                maxPlayers = tonumber(self.params.maxPlayers), 
-            }},
+            {["$set"] = server_doc},
             true
         )
 
-        print(result.matched_count)
         if result.matched_count > 0 then
 
             success = true
