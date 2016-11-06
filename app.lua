@@ -1,4 +1,19 @@
-local os = require("os")
+--[[
+    Copyright (C) 2016 GoInto, LLC
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+--]]
 local lapis = require("lapis")
 local app_helpers = require("lapis.application")
 local validate = require("lapis.validate")
@@ -46,7 +61,12 @@ app:get("/server", function(self)
     local clock = os.time()
     local timediff = clock - config.server_timeout
 
-    local result_servers = server_collection:find({ ping = { ["$gt"] = timediff }})
+    local showDevServers = false
+    if self.params.dev then
+        showDevServers = true
+    end
+    print("showDevServers: " .. tostring(showDevServers))
+    local result_servers = server_collection:find({ ping = { ["$gt"] = timediff }, dev = showDevServers })
     
     local servers = {}
     for server in result_servers do
