@@ -65,7 +65,7 @@ app:get("/server", function(self)
     if self.params.dev then
         showDevServers = true
     end
-    print("showDevServers: " .. tostring(showDevServers))
+    
     local result_servers = server_collection:find({ ping = { ["$gt"] = timediff }, dev = showDevServers })
     
     local servers = {}
