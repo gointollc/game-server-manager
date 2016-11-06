@@ -63,4 +63,4 @@ These other minor endpoints exist as well:
 
 ## License
 
-This software is released under the GNU Public License v3.  Please see [LICENSE.txt] for the full text of the license.
+This software is released under the GNU Public License v3.  Please see [LICENSE.txt](LICENSE.txt) for the full text of the license.
