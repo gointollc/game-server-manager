@@ -9,7 +9,8 @@ Application to track operating game servers and provide an up to date and health
 
 ## Get servers
 
-Endpoint: `/server`
+*Endpoint*: `/server`
+*Accepted Methods*: `GET`
 
 Get all available game servers.
 
@@ -31,6 +32,7 @@ Get all available game servers.
 ## Ping
 
 Endpoint: `/server/ping`
+*Accepted Methods*: `POST`
 
 Pinging the server is what lets the tracker know that a server is active and what kind of room it has.  It also lets the tracker know that the server is still alive.  if it doesn't get a ping before `server_timeout` is reached, it will be considered dead and removed from the list. 
 
@@ -50,3 +52,10 @@ Pinging the server is what lets the tracker know that a server is active and wha
         "success": true,
         "reason": "Successfully added server"
     }
+
+## Other Endpoints 
+
+These other minor endpoints exist as well: 
+
+`GET /`: Basic html index for stray browsers
+`GET /robots.txt`: [Robots file](http://www.robotstxt.org/) to limit crawlers from grabbing up any information from the API.
