@@ -105,7 +105,7 @@ app:post("/server/ping", capture_errors({
         local success
         local reason
         
-        ngx.log(ngx.NOTICE, "PSK: " .. self.params.psk)
+        ngx.log(ngx.NOTICE, "PSK: " .. tostring(self.params.psk))
         ngx.log(ngx.NOTICE, "hostname: " .. self.params.hostname)
         ngx.log(ngx.NOTICE, "port: " .. self.params.port)
         ngx.log(ngx.NOTICE, "name: " .. self.params.name)
@@ -119,7 +119,7 @@ app:post("/server/ping", capture_errors({
         }) 
 
         -- authenticate
-        if self.params.psk ~= config.production_psk and self.params.psk ~= config.development_psk then 
+        if not self.params.psk or (self.params.psk ~= config.production_psk and self.params.psk ~= config.development_psk) then 
             ngx.log(ngx.WARN, "Authentication failure")
             return {
                 json = {
@@ -196,7 +196,14 @@ app:post("/server/ping", capture_errors({
     end,
     on_error = function(self, err, trace)
         --ngx.log(ngx.NOTICE, "There was an error! " .. self.errors[0])
-        ngx.log(ngx.ERR, "Unknown error.")
+        
+        local error_string = ""
+        for i,v in pairs(self.errors) do
+            error_string = error_string .. " - " .. v
+        end
+
+        ngx.log(ngx.ERR, "ERROR" .. error_string)
+
         return { 
             json = {
                 success = false, 
