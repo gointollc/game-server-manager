@@ -60,3 +60,7 @@ These other minor endpoints exist as well:
 `GET /`: Basic html index for stray browsers
 
 `GET /robots.txt`: [Robots file](http://www.robotstxt.org/) to limit crawlers from grabbing up any information from the API.
+
+## License
+
+This software is released under the GNU Public License v3.  Please see [LICENSE.txt] for the full text of the license.
