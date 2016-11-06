@@ -58,4 +58,5 @@ Pinging the server is what lets the tracker know that a server is active and wha
 These other minor endpoints exist as well: 
 
 `GET /`: Basic html index for stray browsers
+
 `GET /robots.txt`: [Robots file](http://www.robotstxt.org/) to limit crawlers from grabbing up any information from the API.
